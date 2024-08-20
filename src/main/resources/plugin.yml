@@ -1,0 +1,4 @@
+name: MessageLogger
+version: '${version}'
+main: com.asintoto.messagelogger.MessageLogger
+api-version: '1.20'

@@ -1,0 +1,11 @@
+database:
+  # sqlite | mysql
+  type: "sqlite"
+  database-name: "storage"
+  ip-address: "localhost"
+  port: 3306
+  user: "root"
+  password: ""
+
+log:
+  entry-per-page: 10

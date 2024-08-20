@@ -1,0 +1,21 @@
+system:
+  on-enable: "<SOLID:34a4eb>MessageLogger &r&aPlugin Enabled!"
+  on-disable: "<SOLID:34a4eb>MessageLogger &r&cPlugin Disabled!"
+
+error:
+  database-error: "&7[&c!&7] &cCan't connect to database, please try again later."
+  invalid-database-type: "&7[&a!&7] &cInvalid database type. Please insert a valid one in the config.yml."
+  page-not-existing: "&cThis page does not exist. &8Max: %max-page%"
+  player-not-found: "&cPlayer not found: &e%player%"
+
+admin:
+  reload: "<SOLID:34a4eb>Plugin reloaded"
+  fetching-data: "&7Fetching data for %player%..."
+  list-empty: "<SOLID:34a4eb>%player% has no message logged"
+  default: "<SOLID:34a4eb>• &r&7Running <SOLID:34a4eb>MessageLogger v%version% &7by <SOLID:34a4eb>Asintoto"
+
+log:
+  title: "&f&l----- &r<SOLID:34a4eb>Message Logs for %player% &8[%page%/%max-page%] &r&f&l-----"
+  format: "&7[%date%] &r&f- &r<SOLID:34a4eb>%player%&r&7: &r&f%message%"
+  ago: "ago"
+  just-now: "just now"
