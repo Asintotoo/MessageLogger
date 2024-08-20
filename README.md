@@ -22,3 +22,7 @@ All database operation are completely asynchronous, meaning that the main server
 MessageLogger comes with an API, to use it just run ```MessageLoggerAPI = MessageLoggerApiProvider.getAPI();```
 
 The api contains some methods to get the list of the messages sent by players as a ```List<Message>```, the ```Message``` class contains a field called "message" and a field called "date", you can obtain them by calling ```getMessage()``` and ```getDate()```.
+
+## Libraries Used
+- [Basic](github.com/Asintotoo/Basic): My Personal library to create Minecraft Plugins
+- [Lamp](https://github.com/Revxrsal/Lamp/): A modern annotations-driven commands framework for Java and Kotlin
