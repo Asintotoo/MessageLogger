@@ -25,4 +25,5 @@ The api contains some methods to get the list of the messages sent by players as
 
 ## Libraries Used
 - [Basic](https://github.com/Asintotoo/Basic): My Personal library to create Minecraft Plugins
+- [ColorLib](https://github.com/Asintotoo/ColorLib): My Color Parsing Library for Spigot (built into Basic)
 - [Lamp](https://github.com/Revxrsal/Lamp/): A modern annotations-driven commands framework for Java and Kotlin
