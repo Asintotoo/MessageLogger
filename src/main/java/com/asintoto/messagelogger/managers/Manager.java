@@ -78,12 +78,6 @@ public class Manager {
         return timeAgo.toString().trim();
     }
 
-    public static String getDatabaseTypeString(DatabaseType type) {
-        if(type == DatabaseType.MYSQL) return "MySQL";
-        if(type == DatabaseType.SQLITE) return "SQLite";
-        else return "Invalid";
-    }
-
     public static  <T> List<T> limitList(List<T> lista, int limit) {
         if (lista.size() <= limit) {
             return lista;

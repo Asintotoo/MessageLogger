@@ -9,6 +9,7 @@ import com.asintoto.messagelogger.enums.DatabaseType;
 import com.asintoto.messagelogger.managers.DatabaseManager;
 import com.asintoto.messagelogger.managers.Exporter;
 import com.asintoto.messagelogger.managers.Manager;
+import com.asintoto.messagelogger.struct.CommandMessages;
 import com.asintoto.messagelogger.struct.Message;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import org.bukkit.plugin.ServicePriority;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public final class MessageLogger extends BasicPlugin {
@@ -58,6 +60,9 @@ public final class MessageLogger extends BasicPlugin {
 
     private void registerCommand() {
         this.commandHandler = BukkitCommandHandler.create(this);
+
+        commandHandler.getTranslator().add(new CommandMessages(this));
+        commandHandler.setLocale(new Locale("en", "US"));
 
         commandHandler.register(new LogCommand(this));
         commandHandler.registerBrigadier();

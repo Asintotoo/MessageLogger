@@ -8,6 +8,13 @@ error:
   page-not-existing: "&cThis page does not exist. &8Max: %max-page%"
   player-not-found: "&cPlayer not found: &e%player%"
   export-error: "&7[&c!&7] &cError during file exporting."
+  invalid-enum: "&cInvalid %enum%: &e%content%"
+  no-permission: "&cYou do not have permission to execute this command"
+  invalid-number: "&cExpected a number but found %content%"
+  missing-argument: "&cYou must specify a value for the %content%"
+  number-not-in-range: "&c%value% must be between %min% and %max% (found %content%)"
+  no-subcommand-specified: "&cYou must specify a subcommand"
+  invalid-command: "&cInvalid Command: &e%content%"
 
 admin:
   reload: "<SOLID:34a4eb>Plugin reloaded"

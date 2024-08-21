@@ -2,49 +2,38 @@ package com.asintoto.messagelogger.commands;
 
 
 import com.asintoto.messagelogger.MessageLogger;
-import com.asintoto.messagelogger.api.MessageLoggerApiProvider;
 import com.asintoto.messagelogger.managers.Manager;
 import com.asintoto.messagelogger.struct.Message;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.Default;
-import revxrsal.commands.annotation.Description;
-import revxrsal.commands.annotation.Range;
+import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.List;
 
+@Command({"messagelogger", "msglog"})
 @RequiredArgsConstructor
 public class LogCommand {
     private final MessageLogger plugin;
 
-    @Command({"log", "messagelogger log", "msglog log"})
+
+    @Command("log")
     @CommandPermission("messagelogger.command.log")
     @Description("Get the messages sent by the given player")
     public void log(BukkitCommandActor sender, OfflinePlayer target, @Default("1") @Range(min = 1) int page) {
-
-        String fetch  = plugin.getMessages().getString("admin.fetching-data").replace("%player%", target.getName());
-        sender.getSender().sendMessage(Manager.formatMessage(fetch));
-
-        if(target.isOnline()) {
-            Player p = target.getPlayer();
-            String name = p.getName();
-
-            plugin.getDatabaseManager().getMessages(p).thenAccept(list -> {
-                perform(sender, list, name, page);
-            });
-        } else {
-            String name = target.getName();
-            plugin.getDatabaseManager().getMessages(name).thenAccept(list -> {
-                perform(sender, list, name, page);
-            });
-        }
+        performLog(sender, target, page);
     }
 
-    @Command({"messagelogger reload", "msglog reload"})
+    @Subcommand("log")
+    @CommandPermission("messagelogger.command.log")
+    @Description("Get the messages sent by the given player")
+    public void logSub(BukkitCommandActor sender, OfflinePlayer target, @Default("1") @Range(min = 1) int page) {
+        performLog(sender, target, page);
+    }
+
+    @Subcommand("reload")
     @CommandPermission("messagelogger.command.reload")
     @Description("Reload the plugin")
     public void reload(BukkitCommandActor sender) {
@@ -53,23 +42,23 @@ public class LogCommand {
         sender.getSender().sendMessage(Manager.formatMessage(msg));
     }
 
-    @Command({"messagelogger info", "msglog info"})
+    @DefaultFor({"~", "~ info"})
     @CommandPermission("messagelogger.command.info")
     @Description("Main MessageLogger Command")
     public void def(BukkitCommandActor sender) {
         List<String> msgs = plugin.getMessages().getStringList("admin.info");
         String version = plugin.getDescription().getVersion();
-        String databaseType = Manager.getDatabaseTypeString(plugin.getDatabaseManager().getDatabaseType());
+        String databaseType = plugin.getDatabaseManager().getDatabaseType().toString();
         for(String s : msgs) {
             String msg = s.replace("%version%", version).replace("%database%", databaseType);
             sender.getSender().sendMessage(Manager.formatMessage(msg));
         }
     }
 
-    @Command({"messagelogger export all", "msglog export all"})
+    @Subcommand("export all")
     @CommandPermission("messagelogger.command.export.all")
     @Description("Export All Players Messages")
-    public void exportAll(BukkitCommandActor sender, @Default("100")int limit) {
+    public void exportAll(BukkitCommandActor sender, @Default("100")@Range(min = 1) int limit) {
         String msgs = plugin.getMessages().getString("admin.start-export");
         sender.getSender().sendMessage(Manager.formatMessage(msgs));
 
@@ -81,10 +70,10 @@ public class LogCommand {
         });
     }
 
-    @Command({"messagelogger export single", "msglog export single"})
+    @Subcommand("export single")
     @CommandPermission("messagelogger.command.export.single")
     @Description("Export a Single Player's Messages")
-    public void exportSingle(BukkitCommandActor sender, OfflinePlayer player, @Default("100")int limit) {
+    public void exportSingle(BukkitCommandActor sender, OfflinePlayer player, @Default("100")@Range(min = 1) int limit) {
         String msgs = plugin.getMessages().getString("admin.start-export");
         sender.getSender().sendMessage(Manager.formatMessage(msgs));
 
@@ -163,6 +152,25 @@ public class LogCommand {
             String currentFormat = format.replace("%message%", message).replace("%date%", Manager.timeAgo(date));
 
             sender.getSender().sendMessage(Manager.formatMessage(currentFormat));
+        }
+    }
+
+    private void performLog(BukkitCommandActor sender, OfflinePlayer target, int page) {
+        String fetch  = plugin.getMessages().getString("admin.fetching-data").replace("%player%", target.getName());
+        sender.getSender().sendMessage(Manager.formatMessage(fetch));
+
+        if(target.isOnline()) {
+            Player p = target.getPlayer();
+            String name = p.getName();
+
+            plugin.getDatabaseManager().getMessages(p).thenAccept(list -> {
+                perform(sender, list, name, page);
+            });
+        } else {
+            String name = target.getName();
+            plugin.getDatabaseManager().getMessages(name).thenAccept(list -> {
+                perform(sender, list, name, page);
+            });
         }
     }
 }
