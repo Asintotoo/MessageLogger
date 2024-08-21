@@ -54,11 +54,70 @@ public class LogCommand {
     }
 
     @Command({"messagelogger info", "msglog info"})
-    @CommandPermission("messagelogger.command")
+    @CommandPermission("messagelogger.command.info")
     @Description("Main MessageLogger Command")
     public void def(BukkitCommandActor sender) {
-        String msg = plugin.getMessages().getString("admin.default");
-        msg = msg.replace("%version%", plugin.getDescription().getVersion());
+        List<String> msgs = plugin.getMessages().getStringList("admin.info");
+        String version = plugin.getDescription().getVersion();
+        String databaseType = Manager.getDatabaseTypeString(plugin.getDatabaseManager().getDatabaseType());
+        for(String s : msgs) {
+            String msg = s.replace("%version%", version).replace("%database%", databaseType);
+            sender.getSender().sendMessage(Manager.formatMessage(msg));
+        }
+    }
+
+    @Command({"messagelogger export all", "msglog export all"})
+    @CommandPermission("messagelogger.command.export.all")
+    @Description("Export All Players Messages")
+    public void exportAll(BukkitCommandActor sender, @Default("100")int limit) {
+        String msgs = plugin.getMessages().getString("admin.start-export");
+        sender.getSender().sendMessage(Manager.formatMessage(msgs));
+
+        plugin.getDatabaseManager().getAllMessages(limit).thenAccept(list -> {
+            String target = "all";
+            plugin.getExporter().export(list, target).thenAccept(filename -> {
+                afterExport(target, filename, sender, list);
+            });
+        });
+    }
+
+    @Command({"messagelogger export single", "msglog export single"})
+    @CommandPermission("messagelogger.command.export.single")
+    @Description("Export a Single Player's Messages")
+    public void exportSingle(BukkitCommandActor sender, OfflinePlayer player, @Default("100")int limit) {
+        String msgs = plugin.getMessages().getString("admin.start-export");
+        sender.getSender().sendMessage(Manager.formatMessage(msgs));
+
+        if(player.isOnline()) {
+            Player p = player.getPlayer();
+            plugin.getDatabaseManager().getMessages(p).thenAccept(list -> {
+                List<Message> newList = Manager.limitList(list, limit);
+                plugin.getExporter().export(newList, p.getName()).thenAccept(filename -> {
+                    afterExport(p.getName(), filename, sender, newList);
+                });
+            });
+        } else {
+            plugin.getDatabaseManager().getMessages(player.getName()).thenAccept(list -> {
+                List<Message> newList = Manager.limitList(list, limit);
+                plugin.getExporter().export(newList, player.getName()).thenAccept(filename -> {
+                    afterExport(player.getName(), filename, sender, newList);
+                });
+            });
+        }
+    }
+
+    private void afterExport(String target, String filename, BukkitCommandActor sender, List<Message> list) {
+        if(plugin.getExporter().checkError(filename)) {
+            String msg = plugin.getMessages().getString("error.export-error");
+            sender.getSender().sendMessage(Manager.formatMessage(msg));
+            return;
+        }
+
+        int size = list.size();
+        String msg = plugin.getMessages().getString("admin.export-all")
+                .replace("%count%", Integer.toString(size))
+                .replace("%file%", filename)
+                .replace("%player%", target);
         sender.getSender().sendMessage(Manager.formatMessage(msg));
     }
 

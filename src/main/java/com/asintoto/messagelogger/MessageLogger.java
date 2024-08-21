@@ -7,6 +7,7 @@ import com.asintoto.messagelogger.commands.LogCommand;
 import com.asintoto.messagelogger.config.impl.MessagesConfig;
 import com.asintoto.messagelogger.enums.DatabaseType;
 import com.asintoto.messagelogger.managers.DatabaseManager;
+import com.asintoto.messagelogger.managers.Exporter;
 import com.asintoto.messagelogger.managers.Manager;
 import com.asintoto.messagelogger.struct.Message;
 import lombok.Getter;
@@ -27,7 +28,9 @@ public final class MessageLogger extends BasicPlugin {
     @Getter
     private YamlConfiguration messages;
     @Getter
-    MessageLoggerAPI api;
+    private MessageLoggerAPI api;
+    @Getter
+    private Exporter exporter;
 
     private MessagesConfig messagesConfig;
 
@@ -36,6 +39,7 @@ public final class MessageLogger extends BasicPlugin {
         loadConfig();
 
         this.databaseManager = new DatabaseManager(this);
+        this.exporter = new Exporter(this);
 
         registerCommand();
         setupApi();

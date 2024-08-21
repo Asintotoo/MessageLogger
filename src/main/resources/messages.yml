@@ -7,12 +7,25 @@ error:
   invalid-database-type: "&7[&a!&7] &cInvalid database type. Please insert a valid one in the config.yml."
   page-not-existing: "&cThis page does not exist. &8Max: %max-page%"
   player-not-found: "&cPlayer not found: &e%player%"
+  export-error: "&7[&c!&7] &cError during file exporting."
 
 admin:
   reload: "<SOLID:34a4eb>Plugin reloaded"
   fetching-data: "&7Fetching data for %player%..."
+  start-export: "&7Started message exporting..."
   list-empty: "<SOLID:34a4eb>%player% has no message logged"
-  default: "<SOLID:34a4eb>• &r&7Running <SOLID:34a4eb>MessageLogger v%version% &7by <SOLID:34a4eb>Asintoto"
+  export-all: "<SOLID:34a4eb>Successfully exported %count% messages to file &f&n%file%"
+  export-single: "<SOLID:34a4eb>Successfully exported %count% messages from %player% to file &f&n%file%"
+  info:
+    - ""
+    - "<SOLID:34a4eb>• &r&7Running <SOLID:34a4eb>&lMessageLogger v%version% &7by <SOLID:34a4eb>Asintoto"
+    - "<SOLID:34a4eb>>> &7Database Type: <SOLID:34a4eb>%database%"
+    - ""
+    - "<SOLID:34a4eb>>> &7Print player's log: <SOLID:34a4eb>/msglog log <player> [page]"
+    - "<SOLID:34a4eb>>> &7Reload plugin: <SOLID:34a4eb>/msglog reload"
+    - "<SOLID:34a4eb>>> &7Print this page: <SOLID:34a4eb>/msglog info"
+    - "<SOLID:34a4eb>>> &7Export messages: <SOLID:34a4eb>/msglog export <all|single> <player> [limit]"
+    - ""
 
 log:
   title: "&f&l----- &r<SOLID:34a4eb>Message Logs for %player% &8[%page%/%max-page%] &r&f&l-----"

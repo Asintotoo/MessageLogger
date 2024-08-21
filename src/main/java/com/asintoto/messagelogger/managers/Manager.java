@@ -2,10 +2,12 @@ package com.asintoto.messagelogger.managers;
 
 import com.asintoto.colorlib.ColorLib;
 import com.asintoto.messagelogger.MessageLogger;
+import com.asintoto.messagelogger.enums.DatabaseType;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class Manager {
     public static String formatMessage(String msg) {
@@ -74,5 +76,19 @@ public class Manager {
 
 
         return timeAgo.toString().trim();
+    }
+
+    public static String getDatabaseTypeString(DatabaseType type) {
+        if(type == DatabaseType.MYSQL) return "MySQL";
+        if(type == DatabaseType.SQLITE) return "SQLite";
+        else return "Invalid";
+    }
+
+    public static  <T> List<T> limitList(List<T> lista, int limit) {
+        if (lista.size() <= limit) {
+            return lista;
+        } else {
+            return lista.subList(0, limit);
+        }
     }
 }

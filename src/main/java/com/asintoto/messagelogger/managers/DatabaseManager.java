@@ -148,7 +148,7 @@ public class DatabaseManager {
                 stmt.setString(1, playerName);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    messages.add(new Message(rs.getString("message"), rs.getString("date")));
+                    messages.add(new Message(rs.getString("message"), rs.getString("date"), playerName));
                 }
             } catch (SQLException e) {
                 String msg = plugin.getMessages().getString("error.database-error");
@@ -167,7 +167,26 @@ public class DatabaseManager {
                 stmt.setString(1, p.getUniqueId().toString());
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    messages.add(new Message(rs.getString("message"), rs.getString("date")));
+                    messages.add(new Message(rs.getString("message"), rs.getString("date"), p.getName()));
+                }
+            } catch (SQLException e) {
+                String msg = plugin.getMessages().getString("error.database-error");
+                Common.message(Manager.formatMessage(msg));
+                e.printStackTrace();
+            }
+            return messages;
+        });
+    }
+
+    public CompletableFuture<List<Message>> getAllMessages(int limit) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Message> messages = new ArrayList<>();
+            try {
+                PreparedStatement stmt = connection.prepareStatement("SELECT message, date, username FROM messages ORDER BY date DESC LIMIT ?");
+                stmt.setInt(1, limit);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    messages.add(new Message(rs.getString("message"), rs.getString("date"), rs.getString("username")));
                 }
             } catch (SQLException e) {
                 String msg = plugin.getMessages().getString("error.database-error");
