@@ -10,6 +10,7 @@ All database operation are completely asynchronous, meaning that the main server
 ## Commands
 - ```/messagelogger info``` Get a simple message containing the version of the plugin and the author's name
 - ```/messagelogger log <player> [page]``` Print the list of messages sent by the given player from the more recent to the less recent
+- ```/messagelogger logall [page]``` Print the list of messages sent by all the players from the more recent to the less recent
 - ```/messagelogger reload``` Reload the plugin
 - ```/messagelogger export all [limit]``` Export all the sent messages to a file
 - ```/messagelogger export single <player> [limit]``` Export all the messages sent by the player to a file
@@ -17,6 +18,7 @@ All database operation are completely asynchronous, meaning that the main server
 **Aliases:**
 - ```/msglog info```
 - ```/msglog log <player> [page]``` or ```/log <player> [page]```
+- ```/msglog logall [page]``` or ```/logall [page]```
 - ```/msglog reload```
 - ```/msgl export <all|single> <player> [limit]```
 
