@@ -12,5 +12,9 @@ public interface MessageLoggerAPI {
 
     public CompletableFuture<List<Message>> getMessages(String playerName);
 
+    public CompletableFuture<List<Message>> getAllMessages(int limit);
+
+    public CompletableFuture<List<Message>> getAllMessages();
+
     public DatabaseType getDatabaseType();
 }

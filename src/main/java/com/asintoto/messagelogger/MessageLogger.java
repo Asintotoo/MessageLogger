@@ -96,6 +96,16 @@ public final class MessageLogger extends BasicPlugin {
             }
 
             @Override
+            public CompletableFuture<List<Message>> getAllMessages(int limit) {
+                return databaseManager.getAllMessages(limit);
+            }
+
+            @Override
+            public CompletableFuture<List<Message>> getAllMessages() {
+                return databaseManager.getAllMessages();
+            }
+
+            @Override
             public DatabaseType getDatabaseType() {
                 return databaseManager.getDatabaseType();
             }
