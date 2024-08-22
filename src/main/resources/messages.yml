@@ -19,8 +19,10 @@ error:
 admin:
   reload: "<SOLID:34a4eb>Plugin reloaded"
   fetching-data: "&7Fetching data for %player%..."
+  fetching-data-all: "&7Fetching data for all players..."
   start-export: "&7Started message exporting..."
   list-empty: "<SOLID:34a4eb>%player% has no message logged"
+  list-empty-all: "<SOLID:34a4eb>No message logged yet"
   export-all: "<SOLID:34a4eb>Successfully exported %count% messages to file &f&n%file%"
   export-single: "<SOLID:34a4eb>Successfully exported %count% messages from %player% to file &f&n%file%"
   info:
@@ -36,6 +38,7 @@ admin:
 
 log:
   title: "&f&l----- &r<SOLID:34a4eb>Message Logs for %player% &8[%page%/%max-page%] &r&f&l-----"
+  title-all: "&f&l----- &r<SOLID:34a4eb>Message Logs for all players &8[%page%/%max-page%] &r&f&l-----"
   format: "&7[%date%] &r&f- &r<SOLID:34a4eb>%player%&r&7: &r&f%message%"
   ago: "ago"
   just-now: "just now"

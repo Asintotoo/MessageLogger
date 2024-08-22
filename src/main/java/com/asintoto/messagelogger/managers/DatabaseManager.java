@@ -140,6 +140,7 @@ public class DatabaseManager {
         });
     }
 
+
     public CompletableFuture<List<Message>> getMessages(String playerName) {
         return CompletableFuture.supplyAsync(() -> {
             List<Message> messages = new ArrayList<>();
@@ -184,6 +185,24 @@ public class DatabaseManager {
             try {
                 PreparedStatement stmt = connection.prepareStatement("SELECT message, date, username FROM messages ORDER BY date DESC LIMIT ?");
                 stmt.setInt(1, limit);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    messages.add(new Message(rs.getString("message"), rs.getString("date"), rs.getString("username")));
+                }
+            } catch (SQLException e) {
+                String msg = plugin.getMessages().getString("error.database-error");
+                Common.message(Manager.formatMessage(msg));
+                e.printStackTrace();
+            }
+            return messages;
+        });
+    }
+
+    public CompletableFuture<List<Message>> getAllMessages() {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Message> messages = new ArrayList<>();
+            try {
+                PreparedStatement stmt = connection.prepareStatement("SELECT message, date, username FROM messages ORDER BY date DESC");
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     messages.add(new Message(rs.getString("message"), rs.getString("date"), rs.getString("username")));

@@ -33,6 +33,20 @@ public class LogCommand {
         performLog(sender, target, page);
     }
 
+    @Command("logall")
+    @CommandPermission("messagelogger.command.log.all")
+    @Description("Get the messages sent by all players")
+    public void logSubAll(BukkitCommandActor sender, @Default("1") @Range(min = 1) int page) {
+        performLogAll(sender, page);
+    }
+
+    @Subcommand("logall")
+    @CommandPermission("messagelogger.command.log.all")
+    @Description("Get the messages sent by all players")
+    public void logSubAllSub(BukkitCommandActor sender, @Default("1") @Range(min = 1) int page) {
+        performLogAll(sender, page);
+    }
+
     @Subcommand("reload")
     @CommandPermission("messagelogger.command.reload")
     @Description("Reload the plugin")
@@ -172,5 +186,50 @@ public class LogCommand {
                 perform(sender, list, name, page);
             });
         }
+    }
+
+    private void performLogAll(BukkitCommandActor sender, int page) {
+        String fetch  = plugin.getMessages().getString("admin.fetching-data-all");
+        sender.getSender().sendMessage(Manager.formatMessage(fetch));
+
+        plugin.getDatabaseManager().getAllMessages().thenAccept(list -> {
+            if(list.isEmpty()) {
+                String msg = plugin.getMessages().getString("admin.list-empty-all");
+                sender.getSender().sendMessage(Manager.formatMessage(msg));
+                return;
+            }
+
+            int pages = getPageNumbers(list.size());
+
+            if(page > pages) {
+                String msg = plugin.getMessages().getString("error.page-not-existing")
+                        .replace("%max-page%", Integer.toString(pages));
+
+                sender.getSender().sendMessage(Manager.formatMessage(msg));
+                return;
+            }
+
+            int epp = plugin.getConfig().getInt("log.entry-per-page");
+
+            String title = plugin.getMessages().getString("log.title-all")
+                    .replace("%page%", Integer.toString(page))
+                    .replace("%max-page%", Integer.toString(pages));
+
+            sender.getSender().sendMessage(Manager.formatMessage(title));
+
+            String format = plugin.getMessages().getString("log.format");
+
+            for (int i = (page - 1) * epp; i < page * epp; i++) {
+                String message = list.get(i).getMessage();
+                String date = list.get(i).getDate();
+                String name = list.get(i).getPlayerName();
+                String currentFormat = format
+                        .replace("%message%", message)
+                        .replace("%date%", Manager.timeAgo(date))
+                        .replace("%player%", name);;
+
+                sender.getSender().sendMessage(Manager.formatMessage(currentFormat));
+            }
+        });
     }
 }
